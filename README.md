@@ -1,6 +1,9 @@
 # godot-smoother-node
 A Godot node type that smoothes scene nodes' movements by interpolating between _physics_process steps.
 
+![godot-smoother-node-comparison](https://user-images.githubusercontent.com/7110246/209284462-fef6365a-a0b2-49c3-8747-b93ec18933fc.gif)
+Above: Not smoothed vs. smoothed (player movements are not synced, these are 2 separate runs).
+
 ## Smoother node
 This node interpolates the position of other nodes between their `_physics_process` es. The interpolation is applied in the `_process` loop which ensures that nodes move smoothly, even if the `_physics_process` is called less often than the games fps rate which is typically synced to the current screen's refresh rate.
 
