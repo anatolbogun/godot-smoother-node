@@ -7,6 +7,8 @@ Above: Not smoothed vs. smoothed (player movements are not synced, these are 2 s
 ## Smoother node
 This node interpolates the position of other nodes between their `_physics_process` es. The interpolation is applied in the `_process` loop which ensures that nodes move smoothly, even if the `_physics_process` is called less often than the games fps rate which is typically synced to the current screen's refresh rate.
 
+Visit [godot-smoother-node-test-scene](https://github.com/anatolbogun/godot-smoother-node-test-scene) to download a Godot 4 sample project.
+
 ### Notes:
 - By default this node applies to its parent, siblings and recursive children. Nodes that have no custom `_physics_process` code or a position property are automatically ignored.
 
