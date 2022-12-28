@@ -60,17 +60,17 @@ var _physics_process_nodes:Array[Node]
 var _physics_process_just_updated: = false
 
 
-# reset all smoothed nodes
+## Reset all smoothed nodes.
 func reset() -> void:
 	_properties.clear()
 
 
-# reset a specific node; you may want to call this when a node gets teleported
+## Reset a specific node. You may want to call this when a node gets teleported.
 func reset_node(node:Node) -> void:
 	_properties.erase(node)
 
 
-# reset a specific Node by NodePath; you may want to call this when a Node gets teleported
+## Reset a specific Node by NodePath. You may want to call this when a Node gets teleported.
 func reset_node_path(path:NodePath) -> void:
 	var node: = get_node_or_null(path)
 
@@ -78,47 +78,47 @@ func reset_node_path(path:NodePath) -> void:
 		reset_node(node)
 
 
-# add a Node to the includes Array[NodePath]
+## Add a Node to the includes Array[NodePath].
 func add_include_node(node:Node) -> Array[NodePath]:
 	return add_include_path(get_path_to(node))
 
 
-# add a NodePath to the includes Array[NodePath]
+## Add a NodePath to the includes Array[NodePath].
 func add_include_path(path:NodePath) -> Array[NodePath]:
 	return _add_unique_to_array(includes, path)
 
 
-# remove a Node from the includes Array[NodePath]
+## Remove a Node from the includes Array[NodePath].
 func remove_include_node(node:Node) -> Array[NodePath]:
 	return remove_include_path(get_path_to(node))
 
 
-# remove a NodePath from the includes Array[NodePath]
+## Remove a NodePath from the includes Array[NodePath].
 func remove_include_path(path:NodePath) -> Array[NodePath]:
 	return _remove_all_from_array(includes, path)
 
 
-# add a Node to the excludes Array[NodePath]
+## Add a Node to the excludes Array[NodePath].
 func add_exclude_node(node:Node) -> Array[NodePath]:
 	return add_exclude_path(get_path_to(node))
 
 
-# add a NodePath to the excludes Array[NodePath]
+## Add a NodePath to the excludes Array[NodePath].
 func add_exclude_path(path:NodePath) -> Array[NodePath]:
 	return _add_unique_to_array(excludes, path)
 
 
-# remove a Node from the excludes Array[NodePath]
+## Remove a Node from the excludes Array[NodePath].
 func remove_exclude_node(node:Node) -> Array[NodePath]:
 	return remove_exclude_path(get_path_to(node))
 
 
-# remove a NodePath from the excludes Array[NodePath]
+## Remove a NodePath from the excludes Array[NodePath].
 func remove_exclude_path(path:NodePath) -> Array[NodePath]:
 	return _remove_all_from_array(excludes, path)
 
 
-# add an item to an array unless the array already contains that item
+## Add an item to an array unless the array already contains that item.
 func _add_unique_to_array(array:Array, item) -> Array:
 	if !array.has(item):
 		array.push_back(item)
@@ -126,7 +126,7 @@ func _add_unique_to_array(array:Array, item) -> Array:
 	return array
 
 
-# remove all array items that match item
+## Remove all array items that match item.
 func _remove_all_from_array(array:Array, item) -> Array:
 	while array.has(item):
 		array.erase(item)
@@ -134,7 +134,7 @@ func _remove_all_from_array(array:Array, item) -> Array:
 	return array
 
 
-# apply interpolation to all smoothed_nodes supported properties
+## Apply interpolation to all smoothed_nodes supported properties.
 func _process(_delta: float) -> void:
 	for node in _physics_process_nodes:
 		if !_properties.has(node): continue
@@ -151,15 +151,15 @@ func _process(_delta: float) -> void:
 	_physics_process_just_updated = false
 
 
-# store all smoothed_nodes' properties of the previous (origin) and this (target) _physics_process
-# frames for interpolation in the upcoming _process frames until the next _physics_process and apply
-# the origin values
+## Store all smoothed_nodes' relevant properties of the previous (origin) and this (target)
+## _physics_process frames for interpolation in the upcoming _process frames and apply the origin
+## values.
 func _physics_process(_delta: float) -> void:
 	var parent: = get_parent()
 	if parent == null: return
 
-	# move this node to the top of the parent tree (typically a scene's root
-	# node) so that it is called before all other _physics_processes
+	# move this node to the top of the parent tree (typically a scene's root node) so that it is
+	# called before all other _physics_processes
 	parent.move_child(self, 0)
 
 	if smooth_parent:
@@ -175,7 +175,7 @@ func _physics_process(_delta: float) -> void:
 
 	for node in _physics_process_nodes:
 		if !_properties.has(node):
-			# called on the first frame after this node was added to _properties
+			# called on the first frame after a node was added to _properties
 			_properties[node] = {}
 
 			# clean up _properties when a node exited the tree
@@ -185,10 +185,10 @@ func _physics_process(_delta: float) -> void:
 			if ! property in node: continue
 
 			if !_properties[node].has(property):
-				# called on the first frame after this node was added to _properties
+				# called on the first frame after a node was added to _properties
 				_properties[node][property] = [node[property]]
 			elif _properties[node][property].size() < 2:
-				# called on the second frame after this node was added to _properties
+				# called on the second frame after a node was added to _properties
 				_properties[node][property].push_front(_properties[node][property][0])
 				_properties[node][property][1] = node[property]
 			else:
@@ -198,7 +198,7 @@ func _physics_process(_delta: float) -> void:
 	_physics_process_just_updated = true
 
 
-# get relevant nodes to be smoothed based on this node's tree position and properties
+## Get the relevant nodes to be smoothed based on this node's tree position and properties.
 func _get_physics_process_nodes(node: Node, ignore_node: = false, with_includes: = true) -> Array[Node]:
 	var nodes:Array[Node] = includes.map(
 		func (include): return get_node_or_null(include)
