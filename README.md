@@ -124,6 +124,35 @@ The code will automatically keep the *Smoother* node as the first child of its p
 
 When `smooth_parent` is enabled the `process_priority` will be kept at a lower value than the parent's, i.e. it will be processed earlier, again because the *Smoother*'s `_physics_process` and `_process` code *must* run before nodes that are interpolated by it.
 
+#### Data Structure
+The core of this class is the `_properties` dictionary which holds `_physics_process` origin and target values of the relevant nodes and properties. These values are then interpolated in `_process`.
+
+For easier understanding of the code, the structure is:
+``` gdscript
+_properties[node][property][0] # origin value of a node's property
+_properties[node][property][0] # target value of a node's property
+```
+So for example:
+``` gdscript
+_properties
+├── Player
+│   └── position
+│       ├── 0:Vector2 = {x: 0, y: 0} # origin
+│       └── 1:Vector2 = {x: 10, y: 20} # target
+│   └── rotation
+│       ├── 0:float = 0 # origin
+│       └── 1:float = 15 # target
+├── Enemy
+│   └── position
+│       ├── 0:Vector2 = {x: 100, y: 0} # origin
+│       └── 1:Vector2 = {x: 70, y: 0} # target
+│   └── rotation
+│       ├── 0:float = 0 # origin
+│       └── 1:float = -5 # target
+:
+etc.
+```
+
 ### Limitations
 
 #### RigidBody2D / RigidBody3D
