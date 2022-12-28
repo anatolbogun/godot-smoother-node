@@ -1,8 +1,3 @@
-# SMOOTHER NODE
-#
-# For documentation please visit https://github.com/anatolbogun/godot-smoother-node .
-#
-#
 # MIT LICENSE
 #
 # Copyright 2022 Anatol Bogun
@@ -24,6 +19,13 @@
 
 
 class_name Smoother extends Node
+
+## Smoother Node
+## Version: 1.0.0
+##
+## A node type that smoothes scene nodes' properties by interpolating _physics_process steps.
+##
+## For documentation please visit https://github.com/anatolbogun/godot-smoother-node .
 
 ## Node properties that are interpolated.
 ## Defaults to ["position"], even if not displayed in the inspector.
