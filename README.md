@@ -14,6 +14,11 @@ By default only the node `position` is interpolated.
 
 Visit [godot-smoother-node-test-scene](https://github.com/anatolbogun/godot-smoother-node-test-scene) to download a Godot 4 sample project.
 
+### YouTube Tutorial
+
+[![Youtube Tutorial](https://user-images.githubusercontent.com/7110246/209792804-f471d454-2d0a-487f-8599-46ef0af0ea5e.png)](https://www.youtube.com/watch?v=jIkPYlNF50Q)
+
+
 ### Usage
 
 #### Basic Usage
