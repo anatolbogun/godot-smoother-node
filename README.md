@@ -130,7 +130,7 @@ The core of this class is the `_properties` dictionary which holds `_physics_pro
 For easier understanding of the code, the structure is:
 ``` gdscript
 _properties[node][property][0] # origin value of a node's property
-_properties[node][property][0] # target value of a node's property
+_properties[node][property][1] # target value of a node's property
 ```
 So for example:
 ``` gdscript
