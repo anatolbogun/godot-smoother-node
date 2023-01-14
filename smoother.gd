@@ -21,7 +21,7 @@
 class_name Smoother extends Node
 
 ## Smoother Node
-## Version: 1.0.1
+## Version: 1.0.2
 ##
 ## A node type that smoothes scene nodes' properties by interpolating _physics_process steps.
 ##
@@ -55,7 +55,7 @@ class_name Smoother extends Node
 var smoothed_nodes:Array[Node] :
 	get:
 		var parent: = get_parent()
-		return _get_physics_process_nodes(parent, !smooth_parent) if parent != null else []
+		return _get_physics_process_nodes(parent, !smooth_parent) if parent != null else [] as Array[Node]
 
 var _properties: = {}
 var _physics_process_nodes:Array[Node]
@@ -87,7 +87,7 @@ func add_include_node(node:Node) -> Array[NodePath]:
 
 ## Add a NodePath to the includes Array[NodePath].
 func add_include_path(path:NodePath) -> Array[NodePath]:
-	return _add_unique_to_array(includes, path)
+	return _add_unique_to_array(includes, path) as Array[NodePath]
 
 
 ## Remove a Node from the includes Array[NodePath].
@@ -97,7 +97,7 @@ func remove_include_node(node:Node) -> Array[NodePath]:
 
 ## Remove a NodePath from the includes Array[NodePath].
 func remove_include_path(path:NodePath) -> Array[NodePath]:
-	return _remove_all_from_array(includes, path)
+	return _remove_all_from_array(includes, path) as Array[NodePath]
 
 
 ## Add a Node to the excludes Array[NodePath].
@@ -107,7 +107,7 @@ func add_exclude_node(node:Node) -> Array[NodePath]:
 
 ## Add a NodePath to the excludes Array[NodePath].
 func add_exclude_path(path:NodePath) -> Array[NodePath]:
-	return _add_unique_to_array(excludes, path)
+	return _add_unique_to_array(excludes, path) as Array[NodePath]
 
 
 ## Remove a Node from the excludes Array[NodePath].
@@ -117,11 +117,11 @@ func remove_exclude_node(node:Node) -> Array[NodePath]:
 
 ## Remove a NodePath from the excludes Array[NodePath].
 func remove_exclude_path(path:NodePath) -> Array[NodePath]:
-	return _remove_all_from_array(excludes, path)
+	return _remove_all_from_array(excludes, path) as Array[NodePath]
 
 
 ## Add an item to an array unless the array already contains that item.
-func _add_unique_to_array(array:Array, item) -> Array:
+func _add_unique_to_array(array:Array, item:Variant) -> Array:
 	if !array.has(item):
 		array.push_back(item)
 
@@ -129,7 +129,7 @@ func _add_unique_to_array(array:Array, item) -> Array:
 
 
 ## Remove all array items that match item.
-func _remove_all_from_array(array:Array, item) -> Array:
+func _remove_all_from_array(array:Array, item:Variant) -> Array:
 	while array.has(item):
 		array.erase(item)
 
@@ -205,8 +205,8 @@ func _get_physics_process_nodes(node: Node, ignore_node: = false, with_includes:
 	var nodes:Array[Node] = includes.map(
 		get_node_or_null
 	).filter(
-		func (node): return node != null && !excludes.has(get_path_to(node))
-	) if with_includes else []
+		func (node:Node) -> bool: return node != null && !excludes.has(get_path_to(node))
+	) as Array[Node] if with_includes else [] as Array[Node]
 
 	if (
 		!ignore_node
