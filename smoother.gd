@@ -21,7 +21,7 @@
 class_name Smoother extends Node
 
 ## Smoother Node
-## Version: 1.0.3
+## Version: 1.0.4
 ##
 ## A node type that smoothes scene nodes' properties by interpolating _physics_process steps.
 ##
@@ -202,12 +202,12 @@ func _physics_process(_delta: float) -> void:
 
 ## Get the relevant nodes to be smoothed based on this node's tree position and properties.
 func _get_physics_process_nodes(node: Node, ignore_node: = false, with_includes: = true) -> Array[Node]:
-	var nodes:Array[Node]
+	var nodes:Array[Node] = []
 
 	nodes.assign(includes.map(
 		get_node_or_null
 	).filter(
-		func (node:Node) -> bool: return node != null && !excludes.has(get_path_to(node))
+		func (_node:Node) -> bool: return _node != null && !excludes.has(get_path_to(_node))
 	) if with_includes else [])
 
 	if (
