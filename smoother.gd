@@ -21,11 +21,24 @@
 class_name Smoother extends Node
 
 ## Smoother Node
-## Version: 1.0.4
+## Version: 1.0.5
 ##
 ## A node type that smoothes scene nodes' properties by interpolating _physics_process steps.
 ##
 ## For documentation please visit https://github.com/anatolbogun/godot-smoother-node .
+##
+## ----------------------------------------> IMPORTANT NOTE <----------------------------------------
+## Since Godot 4.3 Beta 1 you can find built-in physics interpolation for 2D in
+## Project settings > Physics > Common > Physics Interpolation.
+## Physics interpolation for 3D is being worked on and should make it into a future release.
+## See https://godotengine.org/article/dev-snapshot-godot-4-3-beta-1/#2d-physics-interpolation .
+## If you can use a Godot version with built-in physics interpolation, I highly recommend to use that
+## and disable or delete this Smoother node from your project. This node was ever only intended as an
+## interim solution until this is added natively to the engine. The built-in physics interpolation
+## also has better support for all node types such as RigidBody2D (which this node cannot handle).
+## Once native physics interpolation moves into stable builds, this Node will be deprecated, unless
+## any pre-native-interpolation Godot 4 versions absolutely need an important fix.
+## --------------------------------------------------------------------------------------------------
 
 ## Node properties that are interpolated.
 ## Defaults to ["position"], even if not displayed in the inspector.
@@ -60,6 +73,7 @@ var smoothed_nodes:Array[Node] :
 var _properties: = {}
 var _physics_process_nodes:Array[Node]
 var _physics_process_just_updated: = false
+var _apply: = true
 
 
 ## Reset all smoothed nodes.
@@ -148,7 +162,10 @@ func _process(_delta: float) -> void:
 				if _physics_process_just_updated:
 					values[1] = node[property]
 
-				node[property] = lerp(values[0], values[1], Engine.get_physics_interpolation_fraction())
+				if _apply:
+					node[property] = lerp(values[0], values[1], Engine.get_physics_interpolation_fraction())
+				else:
+					node[property] = values[1]
 
 	_physics_process_just_updated = false
 
@@ -157,6 +174,8 @@ func _process(_delta: float) -> void:
 ## _physics_process frames for interpolation in the upcoming _process frames and apply the origin
 ## values.
 func _physics_process(_delta: float) -> void:
+	_apply = Engine.get_frames_per_second() > Engine.physics_ticks_per_second
+
 	var parent: = get_parent()
 	if parent == null: return
 
@@ -195,7 +214,8 @@ func _physics_process(_delta: float) -> void:
 				_properties[node][property][1] = node[property]
 			else:
 				_properties[node][property][0] = _properties[node][property][1]
-				node[property] = _properties[node][property][0]
+				if _apply:
+					node[property] = _properties[node][property][0]
 
 	_physics_process_just_updated = true
 
