@@ -4,8 +4,8 @@ A **Godot 4** node type that smoothes scene node movements by interpolating `_ph
 
 ## Important Note!
 Since Godot 4.3 Beta 1 you can find built-in physics interpolation for 2D in `Project settings > Physics > Common > Physics Interpolation`.
-Physics interpolation for 3D is being worked on and should make it into a future release.
-See the related [release notes](https://godotengine.org/article/dev-snapshot-godot-4-3-beta-1/#2d-physics-interpolation).
+Physics interpolation for 3D is included since dev snapshot Godot 4.4 dev 1.
+See the related [release notes for 2D](https://godotengine.org/article/dev-snapshot-godot-4-3-beta-1/#2d-physics-interpolation) and [3D physics interpolation](https://godotengine.org/article/dev-snapshot-godot-4-4-dev-1/#3d-physics-interpolation).
 
 If you can use a Godot version with built-in physics interpolation, I _highly recommend_ using that and disabling this Smoother node or deleting it from your project.
 
